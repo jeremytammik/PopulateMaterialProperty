@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Populate Material Property 2 Run</Text>
+    <Description>Populate Material Property Run</Description>
+    <Assembly>PopulateMaterialProperty.dll</Assembly>
+    <FullClassName>PopulateMaterialProperty.Command</FullClassName>
+    <ClientId>dd0a41f5-7af2-45f3-973c-f4d64dd0d639</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+  <AddIn Type="Command">
+    <Text>Populate Material Property 1 Create Shared Parameter</Text>
+    <Description>Populate Material Property</Description>
+    <Assembly>PopulateMaterialProperty.dll</Assembly>
+    <FullClassName>PopulateMaterialProperty.CmdCreateSharedParameters</FullClassName>
+    <ClientId>1c44c9e9-8638-42a9-be51-9a2bdb79e54c</ClientId>
+    <VendorId>com.typepad.thebuildingcoder</VendorId>
+    <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>
