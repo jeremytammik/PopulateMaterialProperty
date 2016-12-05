@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle( "PopulateMaterialProperty" )]
-[assembly: AssemblyDescription( "Revit Add-In Description for PopulateMaterialProperty" )]
+[assembly: AssemblyDescription( "Revit Add-In that creates and populates a shared parameter named ForgeMaterial" )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "Autodesk Inc." )]
 [assembly: AssemblyProduct( "PopulateMaterialProperty Revit C# .NET Add-In" )]

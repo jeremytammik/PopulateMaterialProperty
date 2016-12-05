@@ -54,6 +54,7 @@ namespace PopulateMaterialProperty
 
           // Need to regenerate after creating shared 
           // parameter before starting to populate it.
+          // Or not, after all?
 
           doc.Regenerate();
 
