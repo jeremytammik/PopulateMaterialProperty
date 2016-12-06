@@ -16,6 +16,74 @@ namespace PopulateMaterialProperty
   [Transaction( TransactionMode.Manual )]
   public class Command : IExternalCommand
   {
+    /// <summary>
+    /// Implement a dictionary to map unwanted source 
+    /// material names to the cleaned-ip desireable 
+    /// target material names.
+    /// </summary>
+    static Dictionary<string, string> _map = null;
+
+    /// <summary>
+    /// Define the material name string mapping pairs.
+    /// </summary>
+    static string[] _map_entry_pairs = new string[]
+    {
+      "Masonry - Brick-BLDG 1-King Facade- 3Levelup-13", "Brick",
+      "Masonry - Brick", "Brick",
+      "Concrete - Precast Concrete", "Concrete",
+      "BLD4-Graybrick-Facade", "Brick",
+      "Concrete - Cast-in-Place Concrete", "Concrete",
+      "brick-Facade-level 1 to 3", "Brick",
+      "Default Wall", "Concrete",
+      "Metal - Stud Layer", "Steel",
+      "Wood - Flooring-ElevatorCore", "Wood",
+      "Metal", "Steel",
+      "Masonry - Concrete Masonry Units", "Brick",
+      "Metal - Aluminum_Corregated", "Aluminum",
+      "Sash 2", "Steel",
+      "Sill", "Steel",
+      "Metal - Aluminum", "Aluminum",
+      "wood Panel", "Wood",
+      "BLDG 1-Wood - Flooring", "Wood",
+      "BLDG 1,2,3-Wood - Flooring-plywood", "Wood",
+      "Structure - Wood Joist/Rafter Layer", "Wood",
+      "Default Floor", "Wood",
+      "Metal - Steel", "Steel",
+      "Wood - Dimensional Lumber", "Wood",
+      "Metal - Steel - ASTM A992", "Steel",
+      "Extruded aluminum headrail", "Aluminum",
+      "Metal - Chrome", "Chrome",
+      "Wood - Cherry", "Wood",
+      "Wood_RoofDeck", "Wood",
+      "Mechanical Equipment", "Steel",
+      "Ducts", "Steel",
+      "Duct Fittings", "Steel",
+      "Electrical Fixtures", "Copper"
+    };
+
+    /// <summary>
+    /// Map certain undesired complex material 
+    /// names to something more useful.
+    /// </summary>
+    string Map( string material_name )
+    {
+      if( null == _map )
+      {
+        _map = new Dictionary<string, string>();
+        int n = _map_entry_pairs.Length;
+        Debug.Assert( 0 == n % 2, "expected an even "
+          + " number of string entires to form from-to "
+          + " mapping pairs" );
+        for(int i=0; i < n; ++i,++i )
+        {
+          _map.Add( _map_entry_pairs[i], _map_entry_pairs[i + 1] );
+        }
+      }
+      return _map.ContainsKey( material_name )
+        ? _map[material_name]
+        : material_name;
+    }
+
     public Result Execute(
       ExternalCommandData commandData,
       ref string message,
@@ -27,13 +95,10 @@ namespace PopulateMaterialProperty
       Document doc = uidoc.Document;
 
       FilteredElementCollector col
-      //IEnumerable<Element> col
         = new FilteredElementCollector( doc )
           .WhereElementIsNotElementType()
           .WherePasses( ExportParameters.GetFilter() );
-          //.Where<Element>( e => ElementId.InvalidElementId == e.GroupId );
 
-      //Element e1 = col.FirstElement();
       Element e1 = col.First<Element>();
 
       ExportParameters exportParameters
@@ -56,7 +121,7 @@ namespace PopulateMaterialProperty
           // parameter before starting to populate it.
           // Or not, after all?
 
-          doc.Regenerate();
+          //doc.Regenerate();
 
           t.Commit();
         }
@@ -147,6 +212,7 @@ namespace PopulateMaterialProperty
 
           if( !p.IsReadOnly )
           {
+            material_name = Map( material_name );
             p.Set( material_name );
           }
         }
