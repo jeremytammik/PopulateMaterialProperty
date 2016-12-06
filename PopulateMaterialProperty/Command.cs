@@ -129,6 +129,8 @@ namespace PopulateMaterialProperty
 
       Definition def = ExportParameters.GetDefinition( e1 );
 
+      int n = 0;
+
       using( Transaction tx = new Transaction( doc ) )
       {
         tx.Start( "Populate Forge Material Shared Parameter" );
@@ -214,14 +216,19 @@ namespace PopulateMaterialProperty
           {
             material_name = Map( material_name );
             p.Set( material_name );
+            ++n;
           }
         }
         tx.Commit();
       }
+
+      Util.InfoMsg( string.Format(
+        "Populated {0} Forge material parameter{1}.",
+        n, ( 1 == n ? "" : "s" ) ) );
+
       return Result.Succeeded;
     }
   }
-
   #region CmdCreateSharedParameters
 #if NEED_SEPARATE_COMMAND_TO_CREATE
   [Transaction( TransactionMode.Manual )]
