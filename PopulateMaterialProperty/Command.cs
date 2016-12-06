@@ -9,6 +9,8 @@ using Autodesk.Revit.ApplicationServices;
 using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Autodesk.Revit.UI.Events;
+using System.Reflection;
 #endregion
 
 namespace PopulateMaterialProperty
@@ -28,10 +30,12 @@ namespace PopulateMaterialProperty
     /// </summary>
     static string[] _map_entry_pairs = new string[]
     {
-      "Masonry - Brick-BLDG 1-King Facade- 3Levelup-13", "Brick",
+      "Masonry - Brick-BLDG 1-King Facade- 3Levelup-13\"", "Brick",
       "Masonry - Brick", "Brick",
       "Concrete - Precast Concrete", "Concrete",
       "BLD4-Graybrick-Facade", "Brick",
+      "Cable Tray", "Steel",
+      "Casing", "Steel",
       "Concrete - Cast-in-Place Concrete", "Concrete",
       "brick-Facade-level 1 to 3", "Brick",
       "Default Wall", "Concrete",
@@ -58,7 +62,10 @@ namespace PopulateMaterialProperty
       "Mechanical Equipment", "Steel",
       "Ducts", "Steel",
       "Duct Fittings", "Steel",
-      "Electrical Fixtures", "Copper"
+      "Electrical Fixtures", "Copper",
+      "Lence", "Aluminum",
+      "Light Tub", "Glass",
+      "Sweech", "Aluminum"
     };
 
     /// <summary>
@@ -130,6 +137,8 @@ namespace PopulateMaterialProperty
       Definition def = ExportParameters.GetDefinition( e1 );
 
       int n = 0;
+      Dictionary<string, int> forge_material_names 
+        = new Dictionary<string, int>();
 
       using( Transaction tx = new Transaction( doc ) )
       {
@@ -217,14 +226,26 @@ namespace PopulateMaterialProperty
             material_name = Map( material_name );
             p.Set( material_name );
             ++n;
+            if(!forge_material_names.ContainsKey(material_name))
+            {
+              forge_material_names.Add( material_name, 0 );
+            }
+            ++forge_material_names[material_name];
           }
         }
         tx.Commit();
       }
 
-      Util.InfoMsg( string.Format(
-        "Populated {0} Forge material parameter{1}.",
-        n, ( 1 == n ? "" : "s" ) ) );
+      List<string> keys = new List<string>( forge_material_names.Keys );
+      int m = keys.Count;
+      keys.Sort();
+      string s = string.Join( "\r\n", keys );
+
+      Util.InfoMsg2( string.Format(
+        "Populated {0} Forge material parameter{1} with {2} value{3}{4}",
+        n, ( 1 == n ? "" : "s" ),
+        m, ( 1 == m ? "" : "s" ),
+        ( 0 == m ? "." : ":" ) ), s );
 
       return Result.Succeeded;
     }

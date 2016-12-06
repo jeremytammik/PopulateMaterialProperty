@@ -37,6 +37,7 @@ using System.Runtime.InteropServices;
 //
 // 2016-12-05 2017.0.0.0 initial release
 // 2016-12-06 2017.0.0.1 added specific material mapping table requested by philippe
+// 2016-12-06 2017.0.0.2 added more material mapping table entries and final report
 //
-[assembly: AssemblyVersion( "2017.0.0.1" )]
-[assembly: AssemblyFileVersion( "2017.0.0.1" )]
+[assembly: AssemblyVersion( "2017.0.0.2" )]
+[assembly: AssemblyFileVersion( "2017.0.0.2" )]
